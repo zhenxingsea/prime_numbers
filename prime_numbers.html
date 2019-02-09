@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://echarts.baidu.com/dist/echarts.min.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 1000px;height:680px;"></div>
+<script type="text/javascript">
+    function init(xdata, ydata) {
+        var myChart = echarts.init(document.getElementById('main'));
+        option = {
+			xAxis: {
+				type: 'category',
+				data: xdata
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: [{
+				data: ydata,
+				type: 'line'
+			}]
+		};
+        myChart.setOption(option);
+    }
+
+    function check_prime_numbers(num) {
+        for (var i = 2; i < num; i++) {
+            if (num % i === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function prime_numbers(max) {
+        let pns = [1];
+        let num = 2;
+        while (num <= max) {
+            if (check_prime_numbers(num)) {
+                pns.push(num)
+            }
+            num++;
+        }
+        return pns
+    }
+
+    function negation_prime_numbers(max) {
+        let pns = prime_numbers(max);
+        let npns = [];
+        for (let i = 0; i < pns.length; i++) {
+            let num = pns[i];
+            let num_binary = num.toString(2);
+            let negation_num_binary = "";
+            for (let j = 0; j < num_binary.length; j++) {
+                if (num_binary[j] === "1") {
+                    negation_num_binary += "0";
+                } else {
+                    negation_num_binary += "1";
+                }
+            }
+            let negation_num = parseInt(negation_num_binary, 2);
+            npns.push(negation_num);
+        }
+        return npns;
+    }
+
+    negation_prime_numbers(100);
+
+    function get_xdata(arr) {
+        let len = arr.length;
+        let xs = [];
+        for (let i = 1; i <= len; i++) {
+            // xs.push([i, arr[i]]);
+			xs.push(i);
+        }
+        return xs;
+    }
+
+    let max = 10000;
+    let pns = negation_prime_numbers(max);
+    let xdata = get_xdata(pns);
+    init(xdata, pns);
+</script>
+</body>
+</html>
